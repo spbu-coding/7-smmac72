@@ -6,7 +6,7 @@ CC = gcc
 EXEC_FILE = $(BUILD_DIR)/$(NAME)
 OBJECTS = $(BUILD_DIR)/main.o $(BUILD_DIR)/sorting.o $(BUILD_DIR)/manage_strings.o
 INPUTS = $(patsubst $(TEST_DIR)/%.in, $(TEST_DIR)/%.log, $(wildcard $(TEST_DIR)/*.in))
-ERR_FILE = $(TEST_DIR)/err
+ERR = $(TEST_DIR)/err
 
 all: $(EXEC_FILE)
 
@@ -37,4 +37,4 @@ $(TEST_DIR)/%.log: $(TEST_DIR)/%.in $(EXEC_FILE)
 
 
 clean:
-	$(RM) $(OBJECTS) $(INPUTS) $(BUILD_DIR)/$(NAME)
+	$(RM) $(OBJECTS) $(INPUTS) $(BUILD_DIR)/$(NAME) $(ERR)
