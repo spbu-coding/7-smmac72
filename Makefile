@@ -37,4 +37,4 @@ $(TEST_DIR)/%.log: $(TEST_DIR)/%.in $(EXEC_FILE)
 
 
 clean:
-	$(RM) $(OBJECTS) $(INPUTS) $(BUILD_DIR)/$(NAME)
+	$(RM) $(OBJECTS) $(INPUTS) $(BUILD_DIR)/$(NAME) $(ERR)

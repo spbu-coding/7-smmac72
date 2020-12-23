@@ -45,25 +45,25 @@ char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *le
 char **newArray(const char *buffer2, int stringAmount, int len)
 {
     int chars = 0, stringLen = 0;
-    char **array_of_strings = calloc(stringAmount, sizeof(char *));
-    if (!array_of_strings)
+    char **strings = calloc(stringAmount, sizeof(char *));
+    if (!strings)
     {
         printf("Unable to allocate sufficient memory!\n");
         return NULL;
     }
     for (int i = 0; i < stringAmount; i++)
     {
-        array_of_strings[i] = calloc(1000, sizeof(char));
-        if (!array_of_strings[i])
+        strings[i] = calloc(1000, sizeof(char));
+        if (!strings[i])
         {
-            freeArray(array_of_strings, i);
+            freeArray(strings, i);
             printf("Unable to allocate sufficient memory!\n");
             return NULL;
         }
         stringLen = 0;
         while (chars < len)
         {
-            array_of_strings[i][stringLen] = buffer2[chars];
+            strings[i][stringLen] = buffer2[chars];
             stringLen++;
             if (buffer2[chars] == '\n')
             {
@@ -73,7 +73,7 @@ char **newArray(const char *buffer2, int stringAmount, int len)
             chars++;
         }
     }
-    return array_of_strings;
+    return strings;
 }
 
 int getFileSize(FILE *file)

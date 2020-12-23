@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include "sorting.h"
-#include "manage_strings.h"
+#include "main.h"
 
 int main(int argc, char **argv)
 {
