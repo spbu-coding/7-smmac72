@@ -2,6 +2,8 @@
 #include "sorting.h"
 #include "manage_strings.h"
 
+ERRORS LastError = STATUS_OK;
+
 int checkError()
 {
     switch(LastError)
@@ -36,7 +38,7 @@ int main(int argc, char **argv)
         LastError = ERR_ARGUMENT_NUM;
         return checkError();
     }
-    if (!(strings = readFile(argv[1], &stringAmount)))
+    if (!(strings = readFile(argv[1], &stringAmount, &LastError)))
     {
         return checkError();
     }

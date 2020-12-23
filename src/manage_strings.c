@@ -7,7 +7,7 @@ void freeArray(char **strings, int len)
     free(strings);
 }
 
-char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *len)
+char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *len, ERROR *LastError)
 {
     int chars = 0;
     char *buffer2 = calloc(fileSize + 2, sizeof(char));
@@ -42,7 +42,7 @@ char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *le
     return buffer2;
 }
 
-char **newArray(const char *buffer2, int stringAmount, int len)
+char **newArray(const char *buffer2, int stringAmount, int len, ERROR *LastError)
 {
     int chars = 0, stringLen = 0;
     char **array_of_strings = calloc(stringAmount, sizeof(char *));
@@ -85,12 +85,12 @@ int getFileSize(FILE *file)
     return fileSize;
 }
 
-char **readFile(char *filename, int *stringAmount)
+char **readFile(char *filename, int *stringAmount, ERRORS *LastError)
 {
     FILE *file;
     if ((file = fopen(filename, "rb")) == NULL)
     {
-        LastError = ERR_OPEN_FILE;
+        *LastError = ERR_OPEN_FILE;
         return NULL;
     }
     int fileSize = getFileSize(file);
@@ -98,7 +98,7 @@ char **readFile(char *filename, int *stringAmount)
     if (!buffer)
     {
         fclose(file);
-        LastError = ERR_ALLOC;
+        *LastError = ERR_ALLOC;
         return NULL;
     }
     fread(buffer, fileSize, sizeof(char), file);
@@ -108,7 +108,7 @@ char **readFile(char *filename, int *stringAmount)
     {
         fclose(file);
         free(buffer);
-        LastError = ERR_ALLOC;
+        *LastError = ERR_ALLOC;
         return NULL;
     }
     char **strings;
@@ -117,7 +117,7 @@ char **readFile(char *filename, int *stringAmount)
         fclose(file);
         free(buffer);
         free(buffer2);
-        LastError = ERR_ALLOC;
+        *LastError = ERR_ALLOC;
         return NULL;
     }
     free(buffer);
