@@ -21,7 +21,7 @@ $(BUILD_DIR):
 
 
 check: $(INPUTS)
-	@if [ -f $(ERR) ] ; then \
+	@if [ -e $(ERR) ] ; then \
   		$(RM) $(ERR) \
     	exit 1; \
     fi
@@ -37,4 +37,4 @@ $(TEST_DIR)/%.log: $(TEST_DIR)/%.in $(EXEC_FILE)
 
 
 clean:
-	$(RM) $(OBJECTS) $(INPUTS) $(BUILD_DIR)/$(NAME)
+	$(RM) $(OBJECTS) $(INPUTS) $(BUILD_DIR)/$(NAME) $(ERR)
