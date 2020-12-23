@@ -6,7 +6,6 @@ CC = gcc
 EXEC_FILE = $(BUILD_DIR)/$(NAME)
 OBJECTS = $(BUILD_DIR)/main.o $(BUILD_DIR)/sorting.o $(BUILD_DIR)/manage_strings.o
 INPUTS = $(patsubst $(TEST_DIR)/%.in, $(TEST_DIR)/%.log, $(wildcard $(TEST_DIR)/*.in))
-ERR = $(TEST_DIR)/err
 
 all: $(EXEC_FILE)
 
@@ -28,9 +27,9 @@ $(TEST_DIR)/%.log: $(TEST_DIR)/%.in $(EXEC_FILE)
         echo "Test $< - OK"; \
     else \
         echo "Test $< - FAILED"; \
-        touch ERR; \
+        exit 1; \
     fi
 
 
 clean:
-	$(RM) $(OBJECTS) $(INPUTS) $(BUILD_DIR)/$(NAME) $(ERR)
+	$(RM) $(OBJECTS) $(INPUTS) $(BUILD_DIR)/$(NAME)
