@@ -1,4 +1,6 @@
 #include "manage_strings.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void freeArray(char **strings, int len)
 {
@@ -13,7 +15,7 @@ char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *le
     char *buffer2 = calloc(fileSize + 2, sizeof(char));
     if (!buffer2)
     {
-        LastError = ERR_ALLOC;
+        printf("Unable to allocate sufficient memory!\n");
         return NULL;
     }
     int i = 0;
@@ -30,7 +32,6 @@ char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *le
         }
         else
             chars++;
-        i++;
     }
     if (buffer2[i - 1] != '\n')
     {
@@ -45,25 +46,25 @@ char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *le
 char **newArray(const char *buffer2, int stringAmount, int len)
 {
     int chars = 0, stringLen = 0;
-    char **array_of_strings = calloc(stringAmount, sizeof(char *));
-    if (!array_of_strings)
+    char **strings = calloc(stringAmount, sizeof(char *));
+    if (!strings)
     {
-        LastError = ERR_ALLOC;
+        printf("Unable to allocate sufficient memory!\n");
         return NULL;
     }
     for (int i = 0; i < stringAmount; i++)
     {
-        array_of_strings[i] = calloc(1000, sizeof(char));
-        if (!array_of_strings[i])
+        strings[i] = calloc(1000, sizeof(char));
+        if (!strings[i])
         {
-            freeArray(array_of_strings, i);
-            LastError = ERR_ALLOC;
+            freeArray(strings, i);
+            printf("Unable to allocate sufficient memory!\n");
             return NULL;
         }
         stringLen = 0;
         while (chars < len)
         {
-            array_of_strings[i][stringLen] = buffer2[chars];
+            strings[i][stringLen] = buffer2[chars];
             stringLen++;
             if (buffer2[chars] == '\n')
             {
@@ -73,7 +74,7 @@ char **newArray(const char *buffer2, int stringAmount, int len)
             chars++;
         }
     }
-    return array_of_strings;
+    return strings;
 }
 
 int getFileSize(FILE *file)
@@ -90,15 +91,15 @@ char **readFile(char *filename, int *stringAmount)
     FILE *file;
     if ((file = fopen(filename, "rb")) == NULL)
     {
-        LastError = ERR_OPEN_FILE;
+        printf("Unable to identify, locate and open the file :(\n");
         return NULL;
     }
     int fileSize = getFileSize(file);
     char *buffer = calloc(fileSize, sizeof(char));
     if (!buffer)
     {
+        printf("Unable to allocate sufficient memory!\n");
         fclose(file);
-        LastError = ERR_ALLOC;
         return NULL;
     }
     fread(buffer, fileSize, sizeof(char), file);
@@ -108,7 +109,6 @@ char **readFile(char *filename, int *stringAmount)
     {
         fclose(file);
         free(buffer);
-        LastError = ERR_ALLOC;
         return NULL;
     }
     char **strings;
@@ -117,7 +117,6 @@ char **readFile(char *filename, int *stringAmount)
         fclose(file);
         free(buffer);
         free(buffer2);
-        LastError = ERR_ALLOC;
         return NULL;
     }
     free(buffer);
