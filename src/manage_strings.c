@@ -1,4 +1,6 @@
 #include "manage_strings.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 void freeArray(char **strings, int len)
 {
@@ -30,7 +32,6 @@ char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *le
         }
         else
             chars++;
-        i++;
     }
     if (buffer2[i - 1] != '\n')
     {
@@ -90,15 +91,15 @@ char **readFile(char *filename, int *stringAmount)
     FILE *file;
     if ((file = fopen(filename, "rb")) == NULL)
     {
-        printf("Unable to locate and open the file :(\n");
+        printf("Unable to identify, locate and open the file :(\n");
         return NULL;
     }
     int fileSize = getFileSize(file);
     char *buffer = calloc(fileSize, sizeof(char));
     if (!buffer)
     {
-        fclose(file);
         printf("Unable to allocate sufficient memory!\n");
+        fclose(file);
         return NULL;
     }
     fread(buffer, fileSize, sizeof(char), file);
@@ -108,7 +109,6 @@ char **readFile(char *filename, int *stringAmount)
     {
         fclose(file);
         free(buffer);
-        printf("Unable to allocate sufficient memory!\n");
         return NULL;
     }
     char **strings;
@@ -117,7 +117,6 @@ char **readFile(char *filename, int *stringAmount)
         fclose(file);
         free(buffer);
         free(buffer2);
-        printf("Unable to allocate sufficient memory!\n");
         return NULL;
     }
     free(buffer);

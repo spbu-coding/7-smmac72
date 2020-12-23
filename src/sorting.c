@@ -1,4 +1,6 @@
 #include "sorting.h"
+#include <string.h>
+
 int cmp(const char* string1, const char* string2)
 {
     return strcmp(string1, string2);
