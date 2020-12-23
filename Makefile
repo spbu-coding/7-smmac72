@@ -22,7 +22,6 @@ $(BUILD_DIR):
 
 check: $(INPUTS)
 	@if [ -e $(ERR) ] ; then \
-  		$(RM) $(ERR) \
     	exit 1; \
     fi
 
