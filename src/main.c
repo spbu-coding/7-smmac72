@@ -2,11 +2,30 @@
 #include "sorting.h"
 #include "manage_strings.h"
 
-enum ERRORS
+int checkError()
 {
-    STATUS_OK,
-    ERR_ARGUMENT_NUM
-} error_code;
+    switch(LastError)
+    {
+        case STATUS_OK:
+            return 0;
+
+        case ERR_ARGUMENT_NUM:
+            printf("Two arguments are required.\n");
+            return -1;
+
+        case ERR_ALLOC:
+            printf("Unable to allocate sufficient memory!\n");
+            return -1;
+
+        case ERR_OPEN_FILE:
+            printf("Unable to locate and open the file :(\n");
+            return -1;
+
+        default:
+            printf("Strange error! Contact the developer, please.\n");
+            return -1;
+    }
+}
 
 int main(int argc, char **argv)
 {
@@ -14,12 +33,12 @@ int main(int argc, char **argv)
     int stringAmount = 0;
     if (argc != 2)
     {
-        fprintf(stdout,"Use %s <input file>.txt\n", argv[0]);
-        return -1;
+        LastError = ERR_ARGUMENT_NUM;
+        return checkError();
     }
     if (!(strings = readFile(argv[1], &stringAmount)))
     {
-        return -1;
+        return checkError();
     }
 
     insertion(strings, stringAmount);
