@@ -9,6 +9,6 @@ enum ERRORS
     ERR_OPEN_FILE
 } error_code;
 
-ERRORS LastError = STATUS_OK;
+error_code LastError = STATUS_OK;
 
 #endif
