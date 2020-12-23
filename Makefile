@@ -21,10 +21,6 @@ $(BUILD_DIR):
 
 
 check: $(INPUTS)
-	@if [ -e $(ERR) ]; then \
-  		$(RM) $(ERR); \
-    	exit 1; \
-    fi
 
 $(TEST_DIR)/%.log: $(TEST_DIR)/%.in $(EXEC_FILE)
 	@$(EXEC_FILE) $< >$@
