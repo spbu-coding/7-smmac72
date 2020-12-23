@@ -11,7 +11,7 @@ int main(int argc, char **argv)
         printf("Two arguments are required.\n");
         return -1;
     }
-    if (!(strings = readFile(argv[1], &stringAmount, &LastError)))
+    if (!(strings = readFile(argv[1], &stringAmount)))
         return -1;
 
     insertion(strings, stringAmount);
