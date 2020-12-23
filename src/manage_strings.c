@@ -104,7 +104,7 @@ char **readFile(char *filename, int *stringAmount, ERRORS *LastError)
     fread(buffer, fileSize, sizeof(char), file);
     char *buffer2;
     int len = 0;
-    if (!(buffer2 = removeSymbols(buffer, fileSize, stringAmount, &len)))
+    if (!(buffer2 = removeSymbols(buffer, fileSize, stringAmount, &len, &LastError)))
     {
         fclose(file);
         free(buffer);
@@ -112,7 +112,7 @@ char **readFile(char *filename, int *stringAmount, ERRORS *LastError)
         return NULL;
     }
     char **strings;
-    if (!(strings = newArray(buffer2, *stringAmount, len)))
+    if (!(strings = newArray(buffer2, *stringAmount, len, &LastError)))
     {
         fclose(file);
         free(buffer);

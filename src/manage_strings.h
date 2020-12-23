@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "errors.h"
-void freeArray(char **strings, int len);
-char **readFile(char *filename, int *stringAmount);
+void freeArray(char **strings, int len, ERROR *LastError);
+char **readFile(char *filename, int *stringAmount, ERROR *LastError);
 
 #endif
