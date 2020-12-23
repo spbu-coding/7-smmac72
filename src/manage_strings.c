@@ -13,16 +13,13 @@ char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *le
     char *buffer2 = calloc(fileSize + 2, sizeof(char));
     if (!buffer2)
     {
-        fprintf(stdout, "Can not create buffer\n");
+        LastError = ERR_ALLOC;
         return NULL;
     }
-    int i;
-    for (i = 0; chars < fileSize;)
+    int i = 0;
+    while (chars < fileSize)
     {
-        if (buffer[chars] != '.' && buffer[chars] != ',' &&
-            buffer[chars] != ';' && buffer[chars] != ':' &&
-            buffer[chars] != '!' &&
-            buffer[chars] != '?')
+        if (buffer[chars] != '.' && buffer[chars] != ',' && buffer[chars] != ';' && buffer[chars] != ':' && buffer[chars] != '!' && buffer[chars] != '?')
         {
             if (buffer[chars] == '\n')
                 *stringAmount = *stringAmount + 1;
@@ -33,6 +30,7 @@ char *removeSymbols(const char *buffer, int fileSize, int *stringAmount, int *le
         }
         else
             chars++;
+        i++;
     }
     if (buffer2[i - 1] != '\n')
     {
@@ -50,6 +48,7 @@ char **newArray(const char *buffer2, int stringAmount, int len)
     char **array_of_strings = calloc(stringAmount, sizeof(char *));
     if (!array_of_strings)
     {
+        LastError = ERR_ALLOC;
         return NULL;
     }
     for (int i = 0; i < stringAmount; i++)
@@ -58,6 +57,7 @@ char **newArray(const char *buffer2, int stringAmount, int len)
         if (!array_of_strings[i])
         {
             freeArray(array_of_strings, i);
+            LastError = ERR_ALLOC;
             return NULL;
         }
         stringLen = 0;
@@ -90,15 +90,15 @@ char **readFile(char *filename, int *stringAmount)
     FILE *file;
     if ((file = fopen(filename, "rb")) == NULL)
     {
-        fprintf(stdout, "Cannot open file. No file with name %s exists.", filename);
+        LastError = ERR_OPEN_FILE;
         return NULL;
     }
     int fileSize = getFileSize(file);
     char *buffer = calloc(fileSize, sizeof(char));
     if (!buffer)
     {
-        fprintf(stderr, "Can not create buffer\n");
         fclose(file);
+        LastError = ERR_ALLOC;
         return NULL;
     }
     fread(buffer, fileSize, sizeof(char), file);
@@ -108,6 +108,7 @@ char **readFile(char *filename, int *stringAmount)
     {
         fclose(file);
         free(buffer);
+        LastError = ERR_ALLOC;
         return NULL;
     }
     char **strings;
@@ -116,6 +117,7 @@ char **readFile(char *filename, int *stringAmount)
         fclose(file);
         free(buffer);
         free(buffer2);
+        LastError = ERR_ALLOC;
         return NULL;
     }
     free(buffer);
